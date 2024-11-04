@@ -1,5 +1,7 @@
 package com.dohdonglog.controller;
 
+import com.dohdonglog.request.PostCreate;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +18,8 @@ public class PostController {
     //HTTP Method
 
     @PostMapping("/posts")
-    public String post(@RequestParam String title, @RequestParam String content) {
-        log.info("title={}, content={}", title, content);
+    public String post(PostCreate params) {
+        log.info("params={}", params.toString());
         return "Hello World";
     }
 
