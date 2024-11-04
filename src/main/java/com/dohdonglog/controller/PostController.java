@@ -1,6 +1,7 @@
 package com.dohdonglog.controller;
 
 import com.dohdonglog.request.PostCreate;
+import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,20 +20,8 @@ public class PostController {
     //HTTP Method
 
     @PostMapping("/posts")
-    public String post(@RequestBody PostCreate params) {
+    public String post(@RequestBody @Valid PostCreate params) {
         log.info("params={}", params.toString());
-
-        String title = params.getTitle();
-        if(title == null || title.equals("")) {
-            try {
-                throw new Exception("title is empty");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        String content = params.getContent();
-        if(content == null || content.equals("")) {}
 
         return "Hello World";
     }
