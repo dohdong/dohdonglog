@@ -21,6 +21,19 @@ public class PostController {
     @PostMapping("/posts")
     public String post(@RequestBody PostCreate params) {
         log.info("params={}", params.toString());
+
+        String title = params.getTitle();
+        if(title == null || title.equals("")) {
+            try {
+                throw new Exception("title is empty");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        String content = params.getContent();
+        if(content == null || content.equals("")) {}
+
         return "Hello World";
     }
 
