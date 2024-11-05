@@ -1,5 +1,6 @@
 package com.dohdonglog.controller;
 
+import com.dohdonglog.domain.Post;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.service.PostService;
 import jakarta.validation.Valid;
@@ -26,9 +27,9 @@ public class PostController {
 
 
     @PostMapping("/posts")
-    public Map<String,String> post(@RequestBody @Valid PostCreate request) {
+    public void post(@RequestBody @Valid PostCreate request) {
         postService.write(request);
-        return Map.of();
+
     }
 
 }
