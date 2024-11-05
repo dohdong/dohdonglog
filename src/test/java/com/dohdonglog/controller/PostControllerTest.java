@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,11 @@ class PostControllerTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeEach
+    void clean(){
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("/posts 요청시 Hello World를 출력한다.")
@@ -60,6 +67,8 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청시 DB에 값이 저장됨.")
     void test3() throws Exception {
+        // before 삭제 는 너무 지저분한 방법.
+
         //when
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,6 +78,10 @@ class PostControllerTest {
                 .andDo(print());
         // then
         assertEquals(1L,postRepository.count());
+
+        Post post = postRepository.findAll().get(0);
+        assertEquals("제목입니다.22", post.getTitle());
+        assertEquals("내용입니다.22", post.getContent());
     }
 
 
