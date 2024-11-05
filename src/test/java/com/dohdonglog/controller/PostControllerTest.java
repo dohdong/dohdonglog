@@ -28,6 +28,9 @@ import org.springframework.test.web.servlet.MockMvc;
 class PostControllerTest {
 
     @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -48,9 +51,12 @@ class PostControllerTest {
                 .content("내용입니다.")
                 .build();
         // 면접에서 빌더의 장점은 뭘까? 같은걸 물어볼 수 있다.
+        // - 가독성에 좋다. (값 생성에 대한 유연함)
+        // - 필요한 값만 받을 수 있다. // -> (오버로딩 가능한 조건 찾아보세요)
+        // - 객체의 불변성
 
-        ObjectMapper objectmapper = new ObjectMapper();
-        String json = objectmapper.writeValueAsString(request);
+
+        String json = objectMapper.writeValueAsString(request);
 
 //        System.out.println(json);
 
@@ -60,17 +66,25 @@ class PostControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string("{}"))
+                .andExpect(content().string(""))
                 .andDo(print());
     }
 
     @Test
     @DisplayName("/posts 요청시 title값은 필수다.")
     void test2() throws Exception {
+
+        //given
+        PostCreate request = PostCreate.builder()
+                .content("내용입니다.")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         //expected
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":null, \"content\":\"내용입니다.\"}")
+                        .content(json)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
@@ -84,10 +98,19 @@ class PostControllerTest {
     void test3() throws Exception {
         // before 삭제 는 너무 지저분한 방법.
 
+        //given
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+
         //when
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"제목입니다.\",\"content\":\"내용입니다.\"}")
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
