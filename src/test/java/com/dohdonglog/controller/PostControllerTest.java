@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
+import com.dohdonglog.request.PostCreate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,10 +41,19 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청시 Hello World를 출력한다.")
     void test() throws Exception {
+
+        //given
+        PostCreate request = new PostCreate("제목입니다.", "내용입니다.");
+
+        ObjectMapper objectmapper = new ObjectMapper();
+        String json = objectmapper.writeValueAsString(request);
+
+//        System.out.println(json);
+
         //expected
         mockMvc.perform(post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"제목입니다.\",\"content\":\"내용입니다.\"}")
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("{}"))
@@ -80,8 +91,8 @@ class PostControllerTest {
         assertEquals(1L,postRepository.count());
 
         Post post = postRepository.findAll().get(0);
-        assertEquals("제목입니다.22", post.getTitle());
-        assertEquals("내용입니다.22", post.getContent());
+        assertEquals("제목입니다.", post.getTitle());
+        assertEquals("내용입니다.", post.getContent());
     }
 
 
