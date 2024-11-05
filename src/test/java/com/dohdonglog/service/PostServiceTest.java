@@ -6,6 +6,7 @@ import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.response.PostResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ class PostServiceTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeEach
+    void clean(){
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("글 작성")
