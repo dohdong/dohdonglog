@@ -1,10 +1,12 @@
 package com.dohdonglog.controller;
 
 import com.dohdonglog.request.PostCreate;
+import com.dohdonglog.service.PostService;
 import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class PostController {
 
-    //SSR -> jsp, thymeleaf,mustache
-    //SPA -> vue , react
+    private final PostService postService;
 
-    //HTTP Method
+
 
     @PostMapping("/posts")
-    public Map<String,String> post(@RequestBody @Valid PostCreate params) {
-
+    public Map<String,String> post(@RequestBody @Valid PostCreate request) {
+        postService.write(request);
         return Map.of();
     }
 
