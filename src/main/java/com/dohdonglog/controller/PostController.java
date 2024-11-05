@@ -24,18 +24,8 @@ public class PostController {
     //HTTP Method
 
     @PostMapping("/posts")
-    public Map<String,String> post(@RequestBody @Valid PostCreate params, BindingResult result) {
-        if(result.hasErrors()) {
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            FieldError firstFieldError = fieldErrors.get(0);
+    public Map<String,String> post(@RequestBody @Valid PostCreate params) {
 
-            String fieldName = firstFieldError.getField();
-            String errorMessage = firstFieldError.getDefaultMessage();
-
-            Map<String, String> error = new HashMap<>();
-            error.put(fieldName, errorMessage);
-            return error;
-        }
         return Map.of();
     }
 
