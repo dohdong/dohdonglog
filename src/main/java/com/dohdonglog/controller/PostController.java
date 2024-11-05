@@ -2,6 +2,7 @@ package com.dohdonglog.controller;
 
 import com.dohdonglog.domain.Post;
 import com.dohdonglog.request.PostCreate;
+import com.dohdonglog.response.PostResponse;
 import com.dohdonglog.service.PostService;
 import jakarta.validation.Valid;
 import java.util.HashMap;
@@ -34,10 +35,10 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable(name="postId") Long id) {
-        Post post = postService.get(id);
-
-        return post;
+    public PostResponse get(@PathVariable(name="postId") Long id) {
+        PostResponse response = postService.get(id);
+        // 응답 클래스 분리!
+        return response;
     }
 
 
