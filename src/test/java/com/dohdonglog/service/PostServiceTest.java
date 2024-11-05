@@ -41,4 +41,29 @@ class PostServiceTest {
 
     }
 
+    @Test
+    @DisplayName("글 1개 조회")
+    void test2(){
+
+        // given
+        Post requestPost = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(requestPost);
+
+//        Long postId = 1L;
+
+        // when
+        Post post = postService.get(requestPost.getId());
+
+        // then
+        assertNotNull(post);
+        assertEquals(1L,postRepository.count());
+        assertEquals("foo", post.getTitle());
+        assertEquals("bar", post.getContent());
+
+
+    }
+
 }

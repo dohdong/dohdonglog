@@ -1,6 +1,7 @@
 package com.dohdonglog.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -62,7 +63,7 @@ class PostControllerTest {
 
         //expected
         mockMvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isOk())
@@ -83,7 +84,7 @@ class PostControllerTest {
 
         //expected
         mockMvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isBadRequest())
@@ -109,7 +110,7 @@ class PostControllerTest {
 
         //when
         mockMvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isOk())
@@ -120,6 +121,29 @@ class PostControllerTest {
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
+    }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test4() throws Exception {
+        // given
+        // given
+        Post post = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("foo"))
+                .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
+
     }
 
 
