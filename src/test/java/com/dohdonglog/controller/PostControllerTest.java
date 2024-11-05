@@ -43,7 +43,11 @@ class PostControllerTest {
     void test() throws Exception {
 
         //given
-        PostCreate request = new PostCreate("제목입니다.", "내용입니다.");
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
+        // 면접에서 빌더의 장점은 뭘까? 같은걸 물어볼 수 있다.
 
         ObjectMapper objectmapper = new ObjectMapper();
         String json = objectmapper.writeValueAsString(request);
