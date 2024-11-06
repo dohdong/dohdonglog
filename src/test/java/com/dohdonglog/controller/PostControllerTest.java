@@ -13,7 +13,10 @@ import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -157,26 +160,25 @@ class PostControllerTest {
     void test5() throws Exception {
 
         // given
-        Post post1 = Post.builder()
-                .title("title1")
-                .content("content1")
-                .build();
-        postRepository.save(post1);
-        Post post2 = Post.builder()
-                .title("title2")
-                .content("content2")
-                .build();
-        postRepository.save(post2);
+        List<Post> requestPosts = IntStream.range(1,31)
+                .mapToObj(i -> {
+                    return Post.builder()
+                            .title("호돌맨 제목 " + i)
+                            .content("반포자이 " + i)
+                            .build();
+                })
+                .collect(Collectors.toList());
+        postRepository.saveAll(requestPosts);
+
 
         // expected
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/posts?page=1&sort=id,desc")
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(2)))
-                .andExpect(jsonPath("$[0].id").value(post1.getId()))
-                .andExpect(jsonPath("$[0].title").value("title1"))
-                .andExpect(jsonPath("$[0].content").value("content1"))
+                .andExpect(jsonPath("$.length()",Matchers.is(5)))
+                .andExpect(jsonPath("$[0].title").value("호돌맨 제목 30"))
+                .andExpect(jsonPath("$[0].content").value("반포자이 30"))
                 .andDo(print());
 
     }
