@@ -5,6 +5,7 @@ import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.response.PostResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,13 @@ public class PostService {
 
     }
 
-    public List<Post> getList() {
-        return postRepository.findAll();
+    public List<PostResponse> getList() {
+        return postRepository.findAll().stream()
+                .map(post -> PostResponse.builder()
+                            .id(post.getId())
+                            .title(post.getTitle())
+                            .content(post.getContent())
+                            .build())
+                .collect(Collectors.toList());
     }
 }
