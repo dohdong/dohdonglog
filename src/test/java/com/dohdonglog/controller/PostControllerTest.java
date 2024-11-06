@@ -172,7 +172,7 @@ class PostControllerTest {
 
 
         // expected
-        mockMvc.perform(get("/posts?page=0")
+        mockMvc.perform(get("/posts?page=1&sort=id,desc")
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

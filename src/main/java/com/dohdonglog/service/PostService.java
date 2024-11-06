@@ -43,8 +43,7 @@ public class PostService {
 
     }
 
-    public List<PostResponse> getList(int page) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(Direction.DESC,"id"));
+    public List<PostResponse> getList(Pageable pageable) {
         return postRepository.findAll(pageable).stream()
                 .map(post -> new PostResponse(post))
                 .collect(Collectors.toList());
