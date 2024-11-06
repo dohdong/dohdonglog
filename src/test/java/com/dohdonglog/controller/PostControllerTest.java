@@ -158,13 +158,13 @@ class PostControllerTest {
 
         // given
         Post post1 = Post.builder()
-                .title("123456789012345")
-                .content("bar")
+                .title("title1")
+                .content("content1")
                 .build();
         postRepository.save(post1);
         Post post2 = Post.builder()
-                .title("123456789012345")
-                .content("bar")
+                .title("title2")
+                .content("content2")
                 .build();
         postRepository.save(post2);
 
@@ -174,6 +174,9 @@ class PostControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].id").value(post1.getId()))
+                .andExpect(jsonPath("$[0].title").value("title1"))
+                .andExpect(jsonPath("$[0].content").value("content1"))
                 .andDo(print());
 
     }
