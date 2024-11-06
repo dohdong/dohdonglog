@@ -97,7 +97,8 @@ class PostServiceTest {
 
         // then
         assertEquals(5L,posts.size());
-        assertEquals("호돌맨 제목 1",posts.get(0).getTitle());
+        assertEquals("호돌맨 제목 30",posts.get(0).getTitle());
+        assertEquals("호돌맨 제목 26",posts.get(4).getTitle());
 
     }
 
