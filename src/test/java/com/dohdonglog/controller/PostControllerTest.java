@@ -13,6 +13,8 @@ import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.regex.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -146,6 +148,35 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("글 여러개 조회")
+    void test5() throws Exception {
+
+        // given
+        Post post1 = Post.builder()
+                .title("title1")
+                .content("content1")
+                .build();
+        postRepository.save(post1);
+        Post post2 = Post.builder()
+                .title("title2")
+                .content("content2")
+                .build();
+        postRepository.save(post2);
+
+        // expected
+        mockMvc.perform(get("/posts")
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].id").value(post1.getId()))
+                .andExpect(jsonPath("$[0].title").value("title1"))
+                .andExpect(jsonPath("$[0].content").value("content1"))
                 .andDo(print());
 
     }
