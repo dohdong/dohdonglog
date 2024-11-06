@@ -79,23 +79,28 @@ class PostServiceTest {
     void test3(){
 
         // given
-        Post requestPost1 = Post.builder()
-                .title("foo1")
-                .content("bar1")
-                .build();
-        postRepository.save(requestPost1);
+        postRepository.saveAll(List.of(
+                Post.builder()
+                        .title("foo1")
+                        .content("bar1")
+                        .build(),
+                Post.builder()
+                        .title("foo2")
+                        .content("bar2")
+                        .build()
+        ));
 
-        Post requestPost2 = Post.builder()
-                .title("foo2")
-                .content("bar2")
+        Post requestPost3 = Post.builder()
+                .title("foo3")
+                .content("bar3")
                 .build();
-        postRepository.save(requestPost2);
+        postRepository.save(requestPost3);
 
         // when
         List<PostResponse> posts = postService.getList();
 
         // then
-        assertEquals(2L,posts.size());
+        assertEquals(3L,posts.size());
 
 
     }
