@@ -51,5 +51,12 @@ public class PostService {
     // db글 모두 조회하는 경우 -> db가 뻗을수도 있다.
 
 
+    public void edit(Long id, PostEdit postEdit){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        post.setTitle("");
+        post.setContent("");
+    }
 
 }
