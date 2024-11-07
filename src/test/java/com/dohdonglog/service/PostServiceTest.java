@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
+import com.dohdonglog.request.PostEdit;
 import com.dohdonglog.response.PostResponse;
 import com.dohdonglog.request.PostSearch;
 import java.util.List;
@@ -120,12 +121,18 @@ class PostServiceTest {
 
         postRepository.save(post);
 
-        PostEdit
+        PostEdit postEdit = PostEdit.builder()
+                .title("호돌걸")
+                .build();
 
         // when
-        List<PostResponse> posts = postService.edit();
+        postService.edit(post.getId(),postEdit);
 
         // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id =" + post.getId()));
+
+        assertEquals("호돌걸", changePost.getTitle());
     }
 
 }
