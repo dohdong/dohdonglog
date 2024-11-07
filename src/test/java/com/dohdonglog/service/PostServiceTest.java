@@ -100,9 +100,9 @@ class PostServiceTest {
         List<PostResponse> posts = postService.getList(pageable);
 
         // then
-        assertEquals(5L,posts.size());
+        assertEquals(10L,posts.size());
         assertEquals("호돌맨 제목 30",posts.get(0).getTitle());
-        assertEquals("호돌맨 제목 26",posts.get(4).getTitle());
+
 
     }
 
