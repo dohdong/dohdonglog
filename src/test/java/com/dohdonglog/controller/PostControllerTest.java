@@ -2,6 +2,7 @@ package com.dohdonglog.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
+import com.dohdonglog.request.PostEdit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -207,6 +209,34 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.length()",Matchers.is(10)))
                 .andExpect(jsonPath("$[0].title").value("호돌맨 제목 30"))
                 .andExpect(jsonPath("$[0].content").value("반포자이 30"))
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test7() throws Exception {
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("호돌걸")
+                .content("반포자이")
+                .build();
+
+
+        // expected
+        mockMvc.perform(patch("/posts/{postId}", post.getId() )
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit))
+                )
+                .andExpect(status().isOk())
                 .andDo(print());
 
     }
