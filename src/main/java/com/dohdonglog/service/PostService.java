@@ -1,8 +1,10 @@
 package com.dohdonglog.service;
 
 import com.dohdonglog.domain.Post;
+import com.dohdonglog.domain.PostEditor;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
+import com.dohdonglog.request.PostEdit;
 import com.dohdonglog.response.PostResponse;
 import com.dohdonglog.request.PostSearch;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -51,5 +54,29 @@ public class PostService {
     // db글 모두 조회하는 경우 -> db가 뻗을수도 있다.
 
 
+    @Transactional
+    public void edit(Long id, PostEdit postEdit){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+//        post.change(postEdit.getTitle(),postEdit.getContent());
+
+        PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
+
+        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+
+//        if (postEdit.getTitle() != null){
+//            editorBuilder.title(postEdit.getTitle());
+//        }
+
+//        if(postEdit.getContent() != null){
+//            editorBuilder.content(postEdit.getContent());
+//        }
+
+        post.edit(postEditor);
+
+    }
 
 }

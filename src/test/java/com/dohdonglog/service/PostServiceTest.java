@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.dohdonglog.domain.Post;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
+import com.dohdonglog.request.PostEdit;
 import com.dohdonglog.response.PostResponse;
 import com.dohdonglog.request.PostSearch;
 import java.util.List;
@@ -107,5 +108,64 @@ class PostServiceTest {
 
 
     }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4(){
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("호돌걸")
+                .content("반포자이")
+                .build();
+
+        // when
+        postService.edit(post.getId(),postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id =" + post.getId()));
+
+        assertEquals("호돌걸", changePost.getTitle());
+        assertEquals("반포자이", changePost.getContent());
+
+    }
+
+    @Test
+    @DisplayName("글 내용 수정")
+    void test5(){
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title(null)
+                .content("초가집")
+                .build();
+
+        // when
+        postService.edit(post.getId(),postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id =" + post.getId()));
+        assertEquals("호돌맨", changePost.getTitle());
+        assertEquals("초가집", changePost.getContent());
+
+    }
+
+
 
 }
