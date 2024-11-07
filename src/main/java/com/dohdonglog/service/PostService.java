@@ -1,6 +1,7 @@
 package com.dohdonglog.service;
 
 import com.dohdonglog.domain.Post;
+import com.dohdonglog.domain.PostEditor;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.request.PostEdit;
@@ -58,7 +59,16 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
-        post.change(postEdit.getTitle(),postEdit.getContent());
+//        post.change(postEdit.getTitle(),postEdit.getContent());
+
+        PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
+
+        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+
+        post.edit(postEditor);
+
     }
 
 }
