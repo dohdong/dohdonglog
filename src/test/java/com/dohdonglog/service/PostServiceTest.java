@@ -11,6 +11,7 @@ import com.dohdonglog.request.PostSearch;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -163,6 +164,30 @@ class PostServiceTest {
                 .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id =" + post.getId()));
         assertEquals("호돌맨", changePost.getTitle());
         assertEquals("초가집", changePost.getContent());
+
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test6(){
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+
+
+
+        // when
+        postService.delete(post.getId());
+
+        // then
+        assertEquals(0,postRepository.count());
+
 
     }
 
