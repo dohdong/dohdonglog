@@ -14,7 +14,6 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
-@Setter
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +26,11 @@ public class Post {
 
     @Builder
     public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void change(String title, String content) {
         this.title = title;
         this.content = content;
     }

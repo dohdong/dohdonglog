@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -52,14 +53,12 @@ public class PostService {
     // db글 모두 조회하는 경우 -> db가 뻗을수도 있다.
 
 
+    @Transactional
     public void edit(Long id, PostEdit postEdit){
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
-        post.setTitle(postEdit.getTitle());
-        post.setContent(postEdit.getContent());
-
-        postRepository.save(post);
+        post.change(postEdit.getTitle(),postEdit.getContent());
     }
 
 }
