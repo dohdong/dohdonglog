@@ -52,16 +52,17 @@ public class ExceptionController {
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(statusCode))
                 .message(e.getMessage())
+                .validation(e.getValidation())
                 .build();
 
         // 응답 json validation -> title : 제목에 '바보'를 추가할 수 없습니다.
-        if(e instanceof InvalidRequest){
-            InvalidRequest invalidRequest = (InvalidRequest) e;
-            String fieldName = invalidRequest.getFieldName();
-            String message = invalidRequest.getMessage();
-
-            body.addValidation(fieldName, message);
-        }
+//        if(e instanceof InvalidRequest){
+//            InvalidRequest invalidRequest = (InvalidRequest) e;
+//            String fieldName = invalidRequest.getFieldName();
+//            String message = invalidRequest.getMessage();
+//
+//            body.addValidation(fieldName, message);
+//        }
 
 
         ResponseEntity<ErrorResponse> response = ResponseEntity.status(statusCode)

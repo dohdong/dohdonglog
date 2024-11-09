@@ -17,8 +17,7 @@ public class InvalidRequest extends dohdonglogException{
 
     public InvalidRequest(String fieldName, String message) {
         super(MESSAGE);
-        this.fieldName = fieldName;
-        this.message = message;
+        addValidation(fieldName, message);
     }
 
     @Override
