@@ -1,10 +1,12 @@
 package com.dohdonglog.controller;
 
+import com.dohdonglog.exception.InvalidRequest;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.request.PostEdit;
 import com.dohdonglog.response.PostResponse;
 import com.dohdonglog.request.PostSearch;
 import com.dohdonglog.service.PostService;
+import com.sun.jdi.request.InvalidRequestStateException;
 import jakarta.persistence.PostUpdate;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -31,6 +33,9 @@ public class PostController {
 
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
+        if(request.getTitle().contains("바보")){
+            throw new InvalidRequest();
+        }
         postService.write(request);
 
     }

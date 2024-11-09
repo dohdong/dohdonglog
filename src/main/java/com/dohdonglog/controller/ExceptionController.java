@@ -1,12 +1,16 @@
 package com.dohdonglog.controller;
 
+import com.dohdonglog.exception.PostNotFound;
+import com.dohdonglog.exception.dohdonglogException;
 import com.dohdonglog.response.ErrorResponse;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,5 +41,24 @@ public class ExceptionController {
        return response;
 
     }
+
+    @ResponseBody
+    @ExceptionHandler(dohdonglogException.class)
+    public ResponseEntity<ErrorResponse> dohdonglogException(dohdonglogException e){
+
+        int statusCode = e.getStatusCode();
+
+        ErrorResponse body = ErrorResponse.builder()
+                .code(String.valueOf(statusCode))
+                .message(e.getMessage())
+                .build();
+
+        ResponseEntity<ErrorResponse> response = ResponseEntity.status(statusCode)
+                .body(body);
+
+        return response;
+    }
+
+
 
 }
