@@ -3,6 +3,7 @@ package com.dohdonglog.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.dohdonglog.domain.Post;
+import com.dohdonglog.exception.PostNotFound;
 import com.dohdonglog.repository.PostRepository;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.request.PostEdit;
@@ -189,8 +190,80 @@ class PostServiceTest {
         assertEquals(0,postRepository.count());
 
 
+
+
     }
 
 
+    @Test
+    @DisplayName("글 1개 조회-존재하지 않는 글")
+    void test7 (){
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+//        Long postId = 1L;
+
+        // when
+        assertThrows(PostNotFound.class, ()-> {
+            postService.get(post.getId()+1L);
+        });
+
+//        Assertions.assertEquals("존재하지 않는 글입니다.", e.getMessage());
+        // then
+
+    }
+
+    @Test
+    @DisplayName("게시글 삭제- 존재하지 않는글")
+    void test8(){
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+
+        // then
+        assertThrows(PostNotFound.class, ()-> {
+            postService.delete(post.getId()+1L);
+        });
+
+
+
+
+    }
+
+
+    @Test
+    @DisplayName("글 내용 수정 - 존재하지 않는 글")
+    void test9(){
+
+        // given
+        Post post = Post.builder()
+                .title("호돌맨")
+                .content("반포자이")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("호돌걸")
+                .content("초가집")
+                .build();
+
+
+        // expected
+        assertThrows(PostNotFound.class, ()-> {
+            postService.edit(post.getId()+1L, postEdit);
+        });
+    }
 
 }
