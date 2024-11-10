@@ -326,3 +326,18 @@ class PostControllerTest {
 
 
 }
+
+
+// API 문서 생성
+
+// GET /posts/{postId} -> 단건조회
+// POST /posts -> 게시글 등록
+
+// 클라이언트 입장에서는 어떤 API 있는지 모름
+
+// Spring RestDocs
+// - 운영코드에 영향x
+// - 코드수정 -> 문서를 수정x -> 코드랑 문서 다른 문제있음.
+// - Test 케이스 실행 -> 문서를 생성해준다.
+
+
