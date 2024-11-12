@@ -1,23 +1,13 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 
- // const router = useRouter();
+// const router = useRouter();
 
-// Post 인터페이스 정의
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-}
+const posts = ref([]);
 
-// posts 변수에 타입 적용
-const posts = ref<Post[]>([]);
-
-// const posts = ref([]);
-
-axios.get<Post[]>("/api/posts?page=1&size=5").then((response) => {
+axios.get("/api/posts?page=1&size=5").then((response) => {
   response.data.forEach((r: any) => {
     posts.value.push(r);
   });
