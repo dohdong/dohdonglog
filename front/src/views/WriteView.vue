@@ -13,14 +13,9 @@ const write = function () {
     title: title.value,
     content: content.value,
   })
-  // axios
-  // .post("/api/posts", {
-  //   title: title.value,
-  //   content: content.value,
-  // })
-  // .then(() => {
-  //   router.replace({ name: "home" });
-  // });
+  .then(() => {
+    router.replace({ name: "home" });
+  });
 };
 
 </script>
