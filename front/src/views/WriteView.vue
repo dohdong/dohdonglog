@@ -9,18 +9,13 @@ const content = ref("");
 const router = useRouter();
 
 const write = function () {
-  axios.post("http://localhost:8080/posts",{
+  axios.post("/api/posts",{
     title: title.value,
     content: content.value,
   })
-  // axios
-  // .post("/api/posts", {
-  //   title: title.value,
-  //   content: content.value,
-  // })
-  // .then(() => {
-  //   router.replace({ name: "home" });
-  // });
+  .then(() => {
+    router.replace({ name: "home" });
+  });
 };
 
 </script>
