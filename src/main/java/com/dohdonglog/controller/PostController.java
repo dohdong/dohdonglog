@@ -36,7 +36,12 @@ public class PostController {
     @GetMapping("/foo")
     public String foo(UserSession userSession){
         log.info(">>> {}", userSession.name);
-        return "foo";
+        return userSession.name;
+    }
+
+    @GetMapping("/bar")
+    public String bar(){ // UserSession 이 있으면 인증이 필요한 것.
+        return "인증이 필요없는 페이지";
     }
 
 

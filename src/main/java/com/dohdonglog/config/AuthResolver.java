@@ -1,6 +1,7 @@
 package com.dohdonglog.config;
 
 import com.dohdonglog.config.data.UserSession;
+import com.dohdonglog.exception.Unauthorized;
 import org.apache.catalina.User;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -18,8 +19,13 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        String accessToken = webRequest.getParameter("accessToken");
+        if(accessToken == null || accessToken.equals("")) {
+            throw new Unauthorized();
+        }
+
         UserSession userSession = new UserSession();
-        userSession.name = "호돌맨";
+        userSession.name = accessToken;
         return userSession;
     }
 }
