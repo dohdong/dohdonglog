@@ -1,5 +1,6 @@
 package com.dohdonglog.controller;
 
+import com.dohdonglog.config.data.UserSession;
 import com.dohdonglog.exception.InvalidRequest;
 import com.dohdonglog.request.PostCreate;
 import com.dohdonglog.request.PostEdit;
@@ -33,9 +34,9 @@ public class PostController {
 
 
     @GetMapping("/foo")
-    public String foo(@RequestAttribute("userName") String userName) {
-        log.info(">>> {}", userName);
-        return "testfoo";
+    public String foo(UserSession userSession){
+        log.info(">>> {}", userSession.name);
+        return "foo";
     }
 
 
