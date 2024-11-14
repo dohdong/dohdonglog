@@ -32,9 +32,12 @@ public class PostController {
 
 
     @PostMapping("/posts")
-    public void post(@RequestBody @Valid PostCreate request) {
-        request.validate();
-        postService.write(request);
+    public void post(@RequestBody @Valid PostCreate request, @RequestParam String authorization) {
+        if(authorization.equals("hodolman")){
+            request.validate();
+            postService.write(request);
+        }
+
 
     }
 
