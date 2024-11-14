@@ -1,0 +1,1 @@
+Insert into dohdonglog_user (name,email,password,created_at) values ('호돌맨','dohdong@gmail.com','1234','2024-11-14')
