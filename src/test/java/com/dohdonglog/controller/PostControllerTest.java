@@ -90,7 +90,6 @@ class PostControllerTest {
 
         //when
         mockMvc.perform(post("/posts")
-                        .header("authorization","hodolman")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )

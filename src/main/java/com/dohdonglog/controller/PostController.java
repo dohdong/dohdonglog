@@ -30,14 +30,22 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/test")
+    public String test() {
+        return "testHello";
+    }
+
+    @GetMapping("/foo")
+    public String foo() {
+        return "testfoo";
+    }
 
 
     @PostMapping("/posts")
-    public void post(@RequestBody @Valid PostCreate request, @RequestHeader String authorization) {
-        if(authorization.equals("hodolman")){
-            request.validate();
-            postService.write(request);
-        }
+    public void post(@RequestBody @Valid PostCreate request) {
+        request.validate();
+        postService.write(request);
+
 
 
     }
