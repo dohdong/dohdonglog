@@ -2,6 +2,7 @@ package com.dohdonglog.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -94,7 +95,6 @@ class AuthControllerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("로그인 성공 후 세션 응답")
     void test3() throws Exception {
         // given
@@ -118,6 +118,31 @@ class AuthControllerTest {
 
 
     }
+
+
+    @Test
+    @DisplayName("로그인 후 권한이 필요한 페이지에 접속한다 /foo")
+    void test4() throws Exception {
+//        // given
+//        User user = userRepository.save(User.builder()
+//                .name("성빈")
+//                .email("dohdong@gmail.com")
+//                .password("1234").build());
+//
+//        Login login = Login.builder()
+//                .email("dohdong@gmail.com")
+//                .password("1234").build();
+
+        // expected
+        mockMvc.perform(get("/foo")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+
+
+
+    }
+
 
 
 
