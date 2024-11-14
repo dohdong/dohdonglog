@@ -5,6 +5,8 @@ import com.dohdonglog.domain.User;
 import com.dohdonglog.exception.InvalidSigninInformation;
 import com.dohdonglog.repository.UserRepository;
 import com.dohdonglog.request.Login;
+import com.dohdonglog.response.SessionResponse;
+import com.dohdonglog.service.AuthService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,20 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
+
+    private final AuthService authService;
 
     @PostMapping("/auth/login")
-    public User login(@RequestBody Login login) {
-        // json 로그 조회
-        log.info(">>>login={}",login);
+    public SessionResponse login(@RequestBody Login login) {
 
-        // DB에서 조회
-        User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-                .orElseThrow(() -> new InvalidSigninInformation());
+        String accessToken = authService.signin(login);
 
-        // 토큰을 응답
-        return user;
-
+        return new SessionResponse(accessToken);
 
     }
 
