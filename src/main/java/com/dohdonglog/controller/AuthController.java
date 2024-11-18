@@ -1,6 +1,7 @@
 package com.dohdonglog.controller;
 
 
+import com.dohdonglog.config.AppConfig;
 import com.dohdonglog.domain.User;
 import com.dohdonglog.exception.InvalidSigninInformation;
 import com.dohdonglog.repository.UserRepository;
@@ -13,6 +14,7 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Optional;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +33,8 @@ public class AuthController {
 
 
     private final AuthService authService;
+    private final AppConfig appConfig;
 
-    private static final String KEY = "/TJQPaA3e7TuJmTQ7zekUqqr+eEqnS9f+jGjFvkA7to=";
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
@@ -60,11 +62,12 @@ public class AuthController {
 //        byte[] encodedKey = key.getEncoded();
 //        String strkey = Base64.getEncoder().encodeToString(encodedKey);
 
-        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(KEY));
+        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
         String jws = Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .signWith(key)
+                .setIssuedAt(new Date())
                 .compact();
 
         return new SessionResponse(jws);

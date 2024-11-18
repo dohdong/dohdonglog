@@ -21,3 +21,6 @@ spring:
     defer-datasource-initialization: true
   sql:
     init-model: always
+
+dohdongman:
+  jwt-key: "/TJQPaA3e7TuJmTQ7zekUqqr+eEqnS9f+jGjFvkA7to="
