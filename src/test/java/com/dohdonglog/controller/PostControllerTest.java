@@ -50,37 +50,9 @@ class PostControllerTest {
         postRepository.deleteAll();
     }
 
-    @Test
-    @DisplayName("/posts 요청시 Hello World를 출력한다.")
-    void test() throws Exception {
-
-        //given
-        PostCreate request = PostCreate.builder()
-                .title("제목입니다.")
-                .content("내용입니다.")
-                .build();
-        // 면접에서 빌더의 장점은 뭘까? 같은걸 물어볼 수 있다.
-        // - 가독성에 좋다. (값 생성에 대한 유연함)
-        // - 필요한 값만 받을 수 있다. // -> (오버로딩 가능한 조건 찾아보세요)
-        // - 객체의 불변성
-
-
-        String json = objectMapper.writeValueAsString(request);
-
-//        System.out.println(json);
-
-        //expected
-        mockMvc.perform(post("/posts")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().string(""))
-                .andDo(print());
-    }
 
     @Test
-    @DisplayName("/posts 요청시 title값은 필수다.")
+    @DisplayName("글 작성 요청시 title값은 필수다.")
     void test2() throws Exception {
 
         //given
@@ -103,7 +75,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 DB에 값이 저장됨.")
+    @DisplayName("글 작성 요청시 DB에 값이 저장됨.")
     void test3() throws Exception {
         // before 삭제 는 너무 지저분한 방법.
 
