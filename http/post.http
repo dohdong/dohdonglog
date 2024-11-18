@@ -2,7 +2,7 @@
 
 GET http://localhost:8080/foo
 Content-Type: application/json
-Authorization: asdf
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.ECUfqo-pR1NA0SXo9LH8osZ-EvrBzliN8dmFW8sdg7Y
 
 ### 게시글 작성
 
