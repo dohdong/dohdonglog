@@ -1,14 +1,22 @@
 package com.dohdonglog.controller;
 
 
+import com.dohdonglog.config.AppConfig;
 import com.dohdonglog.domain.User;
 import com.dohdonglog.exception.InvalidSigninInformation;
 import com.dohdonglog.repository.UserRepository;
 import com.dohdonglog.request.Login;
 import com.dohdonglog.response.SessionResponse;
 import com.dohdonglog.service.AuthService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 import java.time.Duration;
+import java.util.Base64;
+import java.util.Date;
 import java.util.Optional;
+import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -25,28 +33,44 @@ public class AuthController {
 
 
     private final AuthService authService;
+    private final AppConfig appConfig;
+
 
     @PostMapping("/auth/login")
-    public ResponseEntity<Object> login(@RequestBody Login login) {
+    public SessionResponse login(@RequestBody Login login) {
 
-        String accessToken = authService.signin(login);
+        Long userId = authService.signin(login);
 
 //        return new SessionResponse(accessToken);
 
-        ResponseCookie cookie = ResponseCookie.from("SESSION", accessToken)
-                .domain("localhost") // todo 서버 환경에 따른 분리 필요
-                .path("/")
-                .httpOnly(true)
-                .secure(false)
-                .maxAge(Duration.ofDays(30))
-                .sameSite("Strict")
-                .build();
+//        ResponseCookie cookie = ResponseCookie.from("SESSION", accessToken)
+//                .domain("localhost") // todo 서버 환경에 따른 분리 필요
+//                .path("/")
+//                .httpOnly(true)
+//                .secure(false)
+//                .maxAge(Duration.ofDays(30))
+//                .sameSite("Strict")
+//                .build();
+//
+//        log.info(">>>> cookie={}", cookie);
+//
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+//                .build();
 
-        log.info(">>>> cookie={}", cookie);
+//        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+//        byte[] encodedKey = key.getEncoded();
+//        String strkey = Base64.getEncoder().encodeToString(encodedKey);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
+        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
+
+        String jws = Jwts.builder()
+                .setSubject(String.valueOf(userId))
+                .signWith(key)
+                .setIssuedAt(new Date())
+                .compact();
+
+        return new SessionResponse(jws);
 
 
     }
