@@ -21,6 +21,11 @@ Content-Type: application/json
 }
 
 
+### 인증 페이지 요청
+GET http://localhost:8080/foo
+Content-Type: application/json
+Cookie: SESSION=d8c772c5-c963-4d03-bca9-f3d891163bb5
+
 ### 사용자 페이지
 
 GET http://localhost:8080/user
