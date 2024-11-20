@@ -13,6 +13,7 @@ import com.dohdonglog.domain.User;
 import com.dohdonglog.repository.SessionRepository;
 import com.dohdonglog.repository.UserRepository;
 import com.dohdonglog.request.Login;
+import com.dohdonglog.request.Signup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -169,6 +170,25 @@ class AuthControllerTest {
 
 
 
+    }
+
+
+    @Test
+    @DisplayName("회원가입")
+    void test6() throws Exception {
+        // given
+        Signup signup = Signup.builder()
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .name("호돌맨")
+                .build();
+
+        // expected
+        mockMvc.perform(post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
 

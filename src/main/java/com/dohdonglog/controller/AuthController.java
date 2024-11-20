@@ -6,6 +6,7 @@ import com.dohdonglog.domain.User;
 import com.dohdonglog.exception.InvalidSigninInformation;
 import com.dohdonglog.repository.UserRepository;
 import com.dohdonglog.request.Login;
+import com.dohdonglog.request.Signup;
 import com.dohdonglog.response.SessionResponse;
 import com.dohdonglog.service.AuthService;
 import io.jsonwebtoken.Jwts;
@@ -73,6 +74,11 @@ public class AuthController {
         return new SessionResponse(jws);
 
 
+    }
+
+    @PostMapping("/auth/signup")
+    public void signup(@RequestBody Signup signup) {
+        authService.signup(signup);
     }
 
 }
